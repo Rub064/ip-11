@@ -15,7 +15,7 @@ The /hello line prints the SITE_NAME environment variable so I can see the host 
 ## pushing to github
 I made an empty repo on github with no readme so it would not fight my local files.
 
-    git remote add origin https://github.com/myuser/ip-11.git
+    git remote add origin https://github.com/Rub064/ip-11.git
     git branch -M main
     git push -u origin main
 
