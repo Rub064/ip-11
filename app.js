@@ -1,6 +1,7 @@
 // homework 11, git and deployment
 
 const express = require('express');
+const path = require('path');
 const app = express();
 
 // the host picks the port, 3000 is just for my laptop
@@ -10,13 +11,18 @@ const siteName = process.env.SITE_NAME || 'my local site';
 // resets every time the dyno restarts, good enough for the assignment
 let visits = 0;
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/hello', (req, res) => {
   visits = visits + 1;
   res.send('hello from ' + siteName + ', visit number ' + visits);
 });
 
-app.listen(port, () => {
-  console.log('listening on port ' + port);
-});
+// vercel calls the app itself, so only start a server when i run this on my laptop
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log('listening on port ' + port);
+  });
+}
+
+module.exports = app;
