@@ -1,5 +1,8 @@
 # ip 11 steps
 
+repo: https://github.com/Rub064/ip-11
+live app: https://ip-11-alpha.vercel.app
+
 ## what the app is
 A small express app that serves a page from the public folder and has one route at /hello.
 The /hello line prints the SITE_NAME environment variable so I can see the host setting it.
@@ -25,20 +28,18 @@ I made an empty repo on github with no readme so it would not fight my local fil
     git commit -m "count visits in memory"
     git push -u origin add-visit-counter
 
-Then on github I opened a pull request from add-visit-counter into main, looked at the
+Then on github I opened pull request #1 from add-visit-counter into main, looked at the
 changed files, and clicked merge pull request. Back in the terminal I ran git checkout main
-and git pull so my local main had the merge too.
+and git pull, which fast forwarded my local main to the merge commit.
 
-## deploying to heroku
-    heroku login
-    heroku create
-    git push heroku main
-    heroku config:set SITE_NAME="ip 11 demo"
-    heroku open
-    heroku logs --tail
+## deploying
+Heroku does not have a free dyno anymore, so I deployed on vercel instead. Vercel runs the
+app as a function instead of a server that stays up, so express needed two changes:
 
-Heroku does not have a free dyno anymore, so running it there costs money now.
-Render.com works the same way on a free web service, build command npm install,
-start command npm start, and SITE_NAME added as an environment variable in the dashboard.
+- vercel.json sends every route to app.js
+- app.js exports the app and only calls app.listen when I run it on my own machine
 
-deployed link: (paste url here after deploy)
+On vercel I imported the repo from github and left the framework preset on Other. Then I
+added SITE_NAME under Settings, Environment Variables. Vercel reads those at build time,
+so the first deploy still showed the fallback text and I had to redeploy before /hello
+printed "hello from ip 11 demo".
