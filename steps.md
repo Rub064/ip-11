@@ -1,7 +1,7 @@
 # ip 11 steps
 
 repo: https://github.com/Rub064/ip-11
-live app: https://ip-11-alpha.vercel.app
+live app: https://ip-11-rubz-7dafe75b92b3.herokuapp.com
 
 ## what the app is
 A small express app that serves a page from the public folder and has one route at /hello.
@@ -32,14 +32,21 @@ Then on github I opened pull request #1 from add-visit-counter into main, looked
 changed files, and clicked merge pull request. Back in the terminal I ran git checkout main
 and git pull, which fast forwarded my local main to the merge commit.
 
-## deploying
-Heroku does not have a free dyno anymore, so I deployed on vercel instead. Vercel runs the
-app as a function instead of a server that stays up, so express needed two changes:
+## deploying to heroku
+    heroku login
+    heroku create ip-11-rubz
+    heroku config:set SITE_NAME="ip 11 demo"
+    git push heroku main
 
-- vercel.json sends every route to app.js
-- app.js exports the app and only calls app.listen when I run it on my own machine
+The build log said "Node.js app detected" and "Procfile declares types -> web", so it picked
+up my Procfile and started the app with node app.js. The port comes from process.env.PORT
+because heroku picks the port, not me.
 
-On vercel I imported the repo from github and left the framework preset on Other. Then I
-added SITE_NAME under Settings, Environment Variables. Vercel reads those at build time,
-so the first deploy still showed the fallback text and I had to redeploy before /hello
-printed "hello from ip 11 demo".
+https://ip-11-rubz-7dafe75b92b3.herokuapp.com/hello prints "hello from ip 11 demo", and the
+only place that text exists is the SITE_NAME config var I set, so the environment variable
+is working.
+
+Heroku does not have a free dyno anymore. Before I paid for one I tried vercel, which is
+what vercel.json in this folder is for. Vercel runs the app as a function instead of a
+server that stays up, so app.js exports the app and only calls app.listen when I run it on
+my own machine.
